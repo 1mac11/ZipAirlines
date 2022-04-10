@@ -13,10 +13,10 @@
 
 #### Run
 
-> `python manage.py migrate && python manage.py runserver`
+> `$ python manage.py migrate && python manage.py runserver`
 
 Open http://localhost:8000/swagger/ or http://localhost:8000/redoc/
 
 
 #### Run tests
-> `python manage.py test`
+> `$ python manage.py test`
