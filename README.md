@@ -10,6 +10,7 @@
 #### Create and activate virtual environment
 > `$ cd ZipAirlines && python3 -m venv venv && . venv/bin/activate`
 
+##### Create `.env` file and copy all data from `.env-example`
 
 #### Run
 
