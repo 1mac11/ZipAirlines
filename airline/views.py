@@ -20,6 +20,9 @@ class AirplaneViewSet(ModelViewSet):
     )
     @action(detail=False, methods=['post'], url_path='multi-create')
     def multi_create(self, request):
+        if len(request.data) > 10:
+            return Response({'detail': 'Airplanes should be not more than 10'}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = self.serializer_class(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()

@@ -27,6 +27,53 @@ class AccountTests(APITestCase):
             "passenger_assumptions": 100
         }
 
+        self.over_limit_request_data = [
+            {
+                "airplane_id": 1,
+                "passenger_assumptions": 1
+            },
+            {
+                "airplane_id": 2,
+                "passenger_assumptions": 2
+            },
+            {
+                "airplane_id": 3,
+                "passenger_assumptions": 3
+            },
+            {
+                "airplane_id": 4,
+                "passenger_assumptions": 4
+            },
+            {
+                "airplane_id": 5,
+                "passenger_assumptions": 5
+            },
+            {
+                "airplane_id": 6,
+                "passenger_assumptions": 6
+            },
+            {
+                "airplane_id": 7,
+                "passenger_assumptions": 7
+            },
+            {
+                "airplane_id": 8,
+                "passenger_assumptions": 8
+            },
+            {
+                "airplane_id": 9,
+                "passenger_assumptions": 9
+            },
+            {
+                "airplane_id": 10,
+                "passenger_assumptions": 10
+            },
+            {
+                "airplane_id": 11,
+                "passenger_assumptions": 11
+            }
+        ]
+
     def test_create_multi_airplane(self):
         """
         Ensure we can create a new multiple Airplane.
@@ -50,3 +97,26 @@ class AccountTests(APITestCase):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertDictEqual(response.data, expected)
+
+    def test_limitation_of_airplanes(self):
+        """
+        Ensure Airplanes is more than 10, so we need to check it
+        """
+        expected_response = {'detail': 'Airplanes should be not more than 10'}
+        url = reverse('airplane-multi-create')
+        response = self.client.post(url, self.over_limit_request_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.assertEqual(response.data, expected_response)
+
+    def test_available_count_of_airplanes(self):
+        """
+        Ensure Airplanes is more than 10, so we need to check it
+        """
+        payload = self.over_limit_request_data.copy()
+        payload.pop()
+        url = reverse('airplane-multi-create')
+        response = self.client.post(url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        self.assertLess(len(response.data), 11)
